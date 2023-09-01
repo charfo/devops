@@ -22,8 +22,9 @@ pipeline {
             steps {
                 script{
                     currentBuild.displayName = "${BUILD_NUMBER}, env ${CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
-                    checkout([$class: 'GitSCM', branches: [[name: "${GIT_BRANCH_DESCARGA}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'remoteGitTridente', url: '
-                    https://github.com/charfo/marketbook.git']]])                    
+                    checkout([$class: 'GitSCM', branches: [[name: "${GIT_BRANCH_DESCARGA}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
+                    // userRemoteConfigs: [[credentialsId: 'remoteGitTridente',
+                    url: 'https://github.com/charfo/marketbook.git']]])
                 }
             }
         }
