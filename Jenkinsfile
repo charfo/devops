@@ -34,7 +34,7 @@ pipeline {
                 echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
                 echo "envProps: ${envProps}"
                 echo "env: ${env}"
-                echo "env: ${env.envProps.CALYPSO_HOME_SOURCES_DIR}"
+                echo "env: ${envProps.CALYPSO_HOME_SOURCES_DIR}"
 
             }
 
@@ -62,9 +62,9 @@ pipeline {
             steps {
                 script {
                     // Assign properties to variables
-                    host = env..CALYPSO_HOST_IP
-                    directory = env.CALYPSO_HOME_SOURCES_DIR
-                    credentialsIdProp = env.CREDENTIAL_HOST_ID
+                    host = envProps.CALYPSO_HOST_IP
+                    directory = envProps.CALYPSO_HOME_SOURCES_DIR
+                    credentialsIdProp = envProps.CREDENTIAL_HOST_ID
                     echo "host: ${host}"
                     echo "directory: ${directory}"
                     echo "credentialsIdProp: ${credentialsIdProp}"
