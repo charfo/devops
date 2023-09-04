@@ -17,10 +17,11 @@ pipeline {
         //string(name: 'VERSION', defaultValue: '', description: 'Version de la aplicacion')
 
     }
-    
+ 
+
     //Lectura de fichero properties
     environment {
-        params = readJSON file: "environment_${CALYPSO_ENVIRONMENT}.json"        
+        environmentProps = readJSON file: "environment_${CALYPSO_ENVIRONMENT}.json"
     }
 
 
@@ -28,9 +29,9 @@ pipeline {
     stages {
         stage ('Print variables'){
             steps {
-                echo "CALYPSO_ENVIRONMENT: ${params.CALYPSO_ENVIRONMENT}"
-                echo "GIT_BRANCH_DESCARGA: ${params.GIT_BRANCH_DESCARGA}"
-                echo "CALYPSO_HOST_IP: ${params.CALYPSO_HOST_IP}"
+                echo "CALYPSO_ENVIRONMENT: ${CALYPSO_ENVIRONMENT}"
+                echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
+                echo "CALYPSO_HOST_IP: ${CALYPSO_HOST_IP}"
             }
 
         }
@@ -38,7 +39,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script{
-                    currentBuild.displayName = "${BUILD_NUMBER}, env ${params.CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
+                    currentBuild.displayName = "${BUILD_NUMBER}, env ${CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
                     checkout([$class: 'GitSCM', branches: [[name: "${GIT_BRANCH_DESCARGA}"]], 
                     doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
                     // userRemoteConfigs: [[credentialsId: 'remoteGitTridente',
@@ -48,7 +49,7 @@ pipeline {
         }
 
         
-        stage("Copy to calipso ${params.CALYPSO_ENVIRONMENT} files") {
+        stage("Copy to calipso ${environmentProps.CALYPSO_ENVIRONMENT} files") {
 
             steps {
                 withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
