@@ -38,11 +38,11 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                script{
-                    currentBuild.displayName = "${BUILD_NUMBER}, env ${CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
-                    checkout( scmGit ( branches: [[name: "${GIT_BRANCH_DESCARGA}"]], 
-                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'marketbook']], 
-                    userRemoteConfigs: [ /*[credentialsId: 'remoteGitTridente', */ url: 'https://github.com/charfo/marketbook.git'] ))
+                script {
+                    checkout([$class: 'GitSCM',
+                              branches: [[name: 'feature1']],
+                              userRemoteConfigs: [[url: 'https://github.com/charfo/marketbook.git']],
+                              extensions: [$class: 'RelativeTargetDirectory', relativeTargetDir: 'marketbook']])
                 }
                 script{
                      sh '''
