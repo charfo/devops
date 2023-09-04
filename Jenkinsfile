@@ -27,6 +27,7 @@ pipeline {
     environment {
         //Read properties file
         envProps = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
+        env.putAll(envProps)
     }
 
 
@@ -37,6 +38,7 @@ pipeline {
                 echo "CALYPSO_ENVIRONMENT: ${CALYPSO_ENVIRONMENT}"
                 echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
                 echo "envProps: ${envProps}"
+                echo "env: ${env}"
             }
 
         }
@@ -62,8 +64,8 @@ pipeline {
 
             steps {
                 withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST_ID}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
-                    host = envProps['CALYPSO_HOST_IP']
-                    directory = envProps['CALYPSO_HOME_SOURCES_DIR']
+                    host = env['CALYPSO_HOST_IP']
+                    directory = env['CALYPSO_HOME_SOURCES_DIR']
                     //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                     echo "Commando a ejecutar"
                     echo '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
