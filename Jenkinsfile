@@ -67,7 +67,7 @@ pipeline {
                             //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                             echo "Commando a ejecutar"
                             echo '''
-                                sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz
+                                sshpass -p "${user_pass}" scp -r ./sources.tar.gz "${user_name}"@"${host}":"${directory}"/sources.tar.gz
                             '''
                             echo "Files are on server and try to deploy the application"                   
                             
