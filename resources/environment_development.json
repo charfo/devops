@@ -1,5 +1,6 @@
 {
     "CALYPSO_ENVIRONMENT":"development",
 	"CALYPSO_HOST_IP":"192.168.1.1",
+	"CREDENTIAL_HOST":"sshCredentialDev",
 	"HOME":"~"
 }

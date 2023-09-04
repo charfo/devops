@@ -13,13 +13,28 @@ pipeline {
     parameters {
         choice(name: 'CALYPSO_ENVIRONMENT', choices: ['', 'development', 'certification','production'], description: 'Entorno Calypso')
         string(name: 'GIT_BRANCH_DESCARGA', defaultValue: '', description: 'Rama Gitlab (ej:feature_TSABloque1_DEV)')
+        //Read params from json file
+        //string(name: 'VERSION', defaultValue: '', description: 'Version de la aplicacion')
+
     }
     
     //Lectura de fichero properties
+    environment {
+        params = readJSON file: "environment_${CALYPSO_ENVIRONMENT}.json"        
+    }
 
 
     // hacemos checkout del repositorio
     stages {
+        stage ('Print variables'){
+            steps {
+                echo "CALYPSO_ENVIRONMENT: ${params.CALYPSO_ENVIRONMENT}"
+                echo "GIT_BRANCH_DESCARGA: ${params.GIT_BRANCH_DESCARGA}"
+                echo "CALYPSO_HOST_IP: ${params.CALYPSO_HOST_IP}"
+            }
+
+        }
+
         stage('Checkout') {
             steps {
                 script{
@@ -33,23 +48,18 @@ pipeline {
         }
 
         
-        stage("Copy to calipso des files") {
+        stage("Copy to calipso ${CALYPSO_ENVIRONMENT} files") {
 
-            when {
-                expression { params.CALYPSO_ENVIRONMENT == 'development' }
-            }            
             steps {
-                withCredentials([usernamePassword(credentialsId: 'US22111_DES', passwordVariable: 'pwdUS22111', usernameVariable: 'userUS22111')]) {
+                withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
                     sh '''
-                        sshpass -p "$pwdUS22111" scp -r ./denunciantes/target/denunciantes*.war "$userUS22111"@10.101.195.53:/home/US22111/sql_scripts/denunciantes.war
+                        sshpass -p "$user_pass" scp -r ./denunciantes/target/denunciantes*.war "$user_name"@10.101.195.53:/home/US22111/sql_scripts/denunciantes.war
                     '''
                     echo "Files are on server and try to deploy the application"
-                    sh """
-                        sshpass -p "$pwdUS22111" ssh -o StrictHostKeyChecking=no "$userUS22111"@10.101.195.53 << EOF
-                        ./script_despliegue/deploy.sh "DES" "${VERSION}"
-					"""
-            }
+
+                }   
         }
+
     }
 
     // finalizar el pipeline con ok 
