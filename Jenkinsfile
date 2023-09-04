@@ -34,6 +34,8 @@ pipeline {
                 echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
                 echo "envProps: ${envProps}"
                 echo "env: ${env}"
+                echo "env: ${env.envProps}"
+
             }
 
         }
