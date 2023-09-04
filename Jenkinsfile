@@ -46,7 +46,7 @@ pipeline {
                 }
                 script{
                      sh '''
-                        zip -r marketbook.zip marketbook
+                        tar -zcvf marketbook.tar.gz marketbook --exclude=.git
                     '''
                 }
 
