@@ -47,7 +47,7 @@ pipeline {
                 }
                 script{
                      sh '''
-                        ar -zcvf sources.tar.gz --exclude='./.git'  **
+                        tar -zcvf sources.tar.gz --exclude='./.git'  **
                     '''
                 }
 
