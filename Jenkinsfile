@@ -50,7 +50,7 @@ pipeline {
                     )
                 }
                 // Add al workspace to zip fie
-                zip zipFile: 'workspace.zip', archive: false, glob: '**/*'
+                zip zipFile: 'workspace.zip', archive: false, dir: 'marketbook'
             }
         }
 
