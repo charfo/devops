@@ -59,11 +59,11 @@ pipeline {
             steps {
                 script {
                     // Assign properties to variables
-                    host = envProps.HOST
-                    directory = envProps.DIRECTORY
+                    host = envProps.CALYPSO_HOST_IP
+                    directory = envProps.CALYPSO_HOME_SOURCES_DIR
                     echo "host: ${host}"
                     echo "directory: ${directory}"
-                    withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST_ID}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
+                    withCredentials([usernamePassword(credentialsId: "${envProps.CREDENTIAL_HOST_ID}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
                             //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                             echo "Commando a ejecutar"
                             echo '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
