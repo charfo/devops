@@ -13,6 +13,8 @@ pipeline {
     parameters {
         choice(name: 'CALYPSO_ENVIRONMENT', choices: ['', 'development', 'certification','production'], description: 'Entorno Calypso')
         string(name: 'GIT_BRANCH_DESCARGA', defaultValue: '', description: 'Rama Gitlab (ej:feature_TSABloque1_DEV)')
+        //Read properteis and assign al to variable
+
     }
  
 
@@ -29,8 +31,7 @@ pipeline {
             steps {
                 echo "CALYPSO_ENVIRONMENT: ${CALYPSO_ENVIRONMENT}"
                 echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
-                echo "CALYPSO_HOST_IP: ${CALYPSO_HOST_IP}"
-            }
+                echo "envProps: ${envProps}"
 
         }
 
