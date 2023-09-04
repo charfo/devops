@@ -58,8 +58,8 @@ pipeline {
 
             steps {
                 withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST_ID}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
-                    host = env.envProps['CALYPSO_HOST_IP']
-                    directory = env.envProps['CALYPSO_HOME_SOURCES_DIR']
+                    host = envProps['CALYPSO_HOST_IP']
+                    directory = envProps['CALYPSO_HOME_SOURCES_DIR']
                     //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                     echo "Commando a ejecutar"
                     echo '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
