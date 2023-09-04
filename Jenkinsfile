@@ -38,7 +38,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script{
-                    currentBuild.displayName = "${BUILD_NUMBER}, env ${CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
+                    currentBuild.displayName = "${BUILD_NUMBER}, env ${params.CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
                     checkout([$class: 'GitSCM', branches: [[name: "${GIT_BRANCH_DESCARGA}"]], 
                     doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
                     // userRemoteConfigs: [[credentialsId: 'remoteGitTridente',
@@ -48,7 +48,7 @@ pipeline {
         }
 
         
-        stage("Copy to calipso ${CALYPSO_ENVIRONMENT} files") {
+        stage("Copy to calipso ${params.CALYPSO_ENVIRONMENT} files") {
 
             steps {
                 withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
