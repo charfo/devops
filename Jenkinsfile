@@ -19,9 +19,10 @@ pipeline {
     }
  
 
-    //Lectura de fichero properties
+    //Lectura de fichero .properties de las propiedades
     environment {
-        environmentProps = readJSON file: "environment_${CALYPSO_ENVIRONMENT}.json"
+        //Read properties file
+        envProps = readProperties file: "environment_${CALYPSO_ENVIRONMENT}.properties"
     }
 
 
