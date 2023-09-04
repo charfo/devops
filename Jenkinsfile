@@ -57,22 +57,17 @@ pipeline {
         stage("Copy to calipso environment the files") {
 
             steps {
+                script{
+                    host = envProps['host']
+                    directory = envProps['directory']
+                    echo "host: ${host}"
+                    echo "directory: ${directory}"
+                }
                 withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST_ID}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
-                    step{
-                        script{
-                            host = envProps['host']
-                            directory = envProps['directory']
-                            echo "host: ${host}"
-                            echo "directory: ${directory}"
-                        }
-                    }
-                    step{
                         //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                         echo "Commando a ejecutar"
                         echo '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
-                        echo "Files are on server and try to deploy the application"
-                    }
-                   
+                        echo "Files are on server and try to deploy the application"                   
                 }   
             }
         }
