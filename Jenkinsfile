@@ -22,7 +22,7 @@ pipeline {
     //Lectura de fichero .properties de las propiedades
     environment {
         //Read properties file
-        envProps = readProperties file: "environment_${CALYPSO_ENVIRONMENT}.properties"
+        envProps = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
     }
 
 
