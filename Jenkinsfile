@@ -49,7 +49,7 @@ pipeline {
         }
 
         
-        stage("Copy to calipso ${environmentProps.CALYPSO_ENVIRONMENT} files") {
+        stage("Copy to calipso environment the files") {
 
             steps {
                 withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
