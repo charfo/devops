@@ -61,9 +61,9 @@ pipeline {
                     host = env.CALYPSO_HOST_IP
                     directory = env.CALYPSO_HOME_SOURCES_DIR
                     credentialsIdProp = env.CREDENTIAL_HOST_ID
-                    echo "host: ${host}"
-                    echo "directory: ${directory}"
-                    echo "credentialsIdProp: ${credentialsIdProp}"
+                    echo "Host destino a copiar: ${host}"
+                    echo "Directorio destino a copiar : ${directory}"
+                    echo "Utilizando la credencial de jeknkins para scp : ${credentialsIdProp}"
                     withCredentials([usernamePassword(credentialsId: "${credentialsIdProp}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
                             echo "Commando a ejecutar en el servidor: scp -r ./sources.tar.gz ${user_name}@${host}:${directory}/sources.tar.gz"
                             echo '''
