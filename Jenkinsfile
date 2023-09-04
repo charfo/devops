@@ -3,6 +3,11 @@ pipeline {
 
     agent any
 
+    // VARIABLE DRY RUN PARA NO EJECUTAR COMANDOS
+    environment {
+        DRY_RUN = 'false'
+    }
+    
     // options  del entorno a utilizar
     options {
         disableConcurrentBuilds()
@@ -35,7 +40,7 @@ pipeline {
             }
 
         }
-
+    
         stage('Checkout') {
             steps {
                 script {
@@ -46,35 +51,32 @@ pipeline {
                 }
                 script{
                      sh '''
-                        tar -zcvf sources.tar.gz . --exclude=.git
+                        ar -zcvf sources.tar.gz --exclude='./.git'  **
                     '''
                 }
 
             }
         }
-
-        
-        /*
-        Copy files into dest machine
+       
         stage("Copy to calipso environment the files") {
 
             steps {
-                withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
-                    sh '''
-                        sshpass -p "$user_pass" scp -r ./denunciantes/target/denunciantes*.war "$user_name"@10.101.195.53:/home/US22111/sql_scripts/denunciantes.war
-                    '''
+                withCredentials([usernamePassword(credentialsId: "${params.CREDENTIAL_HOST_ID}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
+                    host = envProps['CALYPSO_HOST_IP']
+                    directory = envProps['CALYPSO_HOME_SOURCES_DIR']
+                    //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
+                    echo "Commando a ejecutar"
+                    echo '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                     echo "Files are on server and try to deploy the application"
-
                 }   
             }
-
-        }*/
+        }
     }
 
     // finalizar el pipeline con ok 
     post {
         always {
-            echo 'Finalizando ejecucion'
+            echo 'Finalizando ejecucion del job'
         }
         success {
             echo 'Ejecucion exitosa'
