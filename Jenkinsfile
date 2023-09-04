@@ -21,30 +21,33 @@ pipeline {
     //Lectura de fichero .properties de las propiedades
     environment {
 
-        def envProps = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
-
     }
 
 
     // hacemos checkout del repositorio
     stages {
-        stage ('Print variables'){
+        stage ('Print variables parameter'){
             steps {
                 echo "CALYPSO_ENVIRONMENT: ${CALYPSO_ENVIRONMENT}"
                 echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
-                echo "envProps: ${envProps}"
-                echo "env: ${env}"
-                echo "env: ${envProps['CALYPSO_HOME_SOURCES_DIR']}"
-
             }
-
+            steps {
+                // Use a script block to do custom scripting
+                script {
+                    def props = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
+                    env.CALYPSO_HOST_IP = props.CALYPSO_HOST_IP
+                    env.CALYPSO_HOME_SOURCES_DIR = props.CALYPSO_HOME_SOURCES_DIR
+                    env.CREDENTIAL_HOST_ID = props.CREDENTIAL_HOST_ID
+                    env.CALYPSO_HOME_SOURCES_DIR = props.CALYPSO_HOME_SOURCES_DIR
+                }
+            }
         }
     
-        stage('Checkout') {
+        stage('Checkout sources') {
             steps {
                 script {
                     checkout([$class: 'GitSCM',
-                              branches: [[name: 'feature1']],
+                              branches: [[name: "${GIT_BRANCH_DESCARGA}"]],
                               userRemoteConfigs: [[url: 'https://github.com/charfo/marketbook.git']]
                               ])
                 }
@@ -62,9 +65,9 @@ pipeline {
             steps {
                 script {
                     // Assign properties to variables
-                    host = envProps.CALYPSO_HOST_IP
-                    directory = envProps.CALYPSO_HOME_SOURCES_DIR
-                    credentialsIdProp = envProps.CREDENTIAL_HOST_ID
+                    host = env.CALYPSO_HOST_IP
+                    directory = env.CALYPSO_HOME_SOURCES_DIR
+                    credentialsIdProp = env.CREDENTIAL_HOST_ID
                     echo "host: ${host}"
                     echo "directory: ${directory}"
                     echo "credentialsIdProp: ${credentialsIdProp}"
