@@ -25,9 +25,6 @@ pipeline {
             steps {
                 echo "CALYPSO_ENVIRONMENT: ${CALYPSO_ENVIRONMENT}"
                 echo "GIT_BRANCH_DESCARGA: ${GIT_BRANCH_DESCARGA}"
-            }
-            steps {
-                // Use a script block to do custom scripting
                 script {
                     def props = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
                     env.CALYPSO_HOST_IP = props.CALYPSO_HOST_IP
