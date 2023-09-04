@@ -41,14 +41,22 @@ pipeline {
                 script{
                     currentBuild.displayName = "${BUILD_NUMBER}, env ${CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
                     checkout([$class: 'GitSCM', branches: [[name: "${GIT_BRANCH_DESCARGA}"]], 
-                    doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'marketbook']], 
+                    submoduleCfg: [], 
                     // userRemoteConfigs: [[credentialsId: 'remoteGitTridente',
-                    url: 'https://github.com/charfo/marketbook.git'])
+                    url: 'https://github.com/charfo/marketbook.git']
+                    // add dest folder
+                    )
                 }
+                // Add al workspace to zip fie
+                zip zipFile: 'workspace.zip', archive: false, glob: '**/*'
             }
         }
 
         
+        /*
+        Copy files into dest machine
         stage("Copy to calipso environment the files") {
 
             steps {
@@ -61,7 +69,7 @@ pipeline {
                 }   
             }
 
-        }
+        }*/
     }
 
     // finalizar el pipeline con ok 
