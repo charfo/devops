@@ -24,7 +24,7 @@ pipeline {
         script {
             new Properties().load(new StringReader(readFile("resources/environment_${CALYPSO_ENVIRONMENT}.properties")))
             .each { key, value ->
-                env["${key}"] = value
+                env."${key}" = value
             }
         }
     }
