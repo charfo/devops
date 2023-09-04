@@ -40,14 +40,14 @@ pipeline {
             steps {
                 script{
                     currentBuild.displayName = "${BUILD_NUMBER}, env ${CALYPSO_ENVIRONMENT}, rama ${GIT_BRANCH_DESCARGA}"
-                    checkout([$class: 'GitSCM', branches: [[name: "${GIT_BRANCH_DESCARGA}"]], 
-                    doGenerateSubmoduleConfigurations: false, 
+                    checkout( scmGit( branches: [[name: "${GIT_BRANCH_DESCARGA}"]], 
+                    //doGenerateSubmoduleConfigurations: false, 
                     extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'marketbook']], 
-                    submoduleCfg: [], 
+                    //submoduleCfg: [], 
                     // userRemoteConfigs: [[credentialsId: 'remoteGitTridente',
                     url: 'https://github.com/charfo/marketbook.git']
                     // add dest folder
-                    )
+                    ))
                 }
                 script{
                      sh '''
