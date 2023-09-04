@@ -22,10 +22,10 @@ pipeline {
     environment {
 
         def envProps = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
-        env.CALYPSO_ENVIRONMENT = envProps.getProperty('CALYPSO_ENVIRONMENT')
-        env.CALYPSO_HOST_IP = envProps.getProperty('CALYPSO_HOST_IP')
-        env.CREDENTIAL_HOST_ID = envProps.getProperty('CREDENTIAL_HOST_ID')
-        env.CALYPSO_HOME_SOURCES_DIR = envProps.getProperty('CALYPSO_HOME_SOURCES_DIR')      
+        env.CALYPSO_ENVIRONMENT = envProps.CALYPSO_ENVIRONMENT
+        env.CALYPSO_HOST_IP = envProps.CALYPSO_HOST_IP
+        env.CREDENTIAL_HOST_ID = envProps.CREDENTIAL_HOST_ID
+        env.CALYPSO_HOME_SOURCES_DIR = envProps.CALYPSO_HOME_SOURCES_DIR
 
     }
 
