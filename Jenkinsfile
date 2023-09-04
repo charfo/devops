@@ -58,8 +58,9 @@ pipeline {
                     echo "Files are on server and try to deploy the application"
 
                 }   
-        }
+            }
 
+        }
     }
 
     // finalizar el pipeline con ok 
