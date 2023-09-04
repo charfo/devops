@@ -49,8 +49,12 @@ pipeline {
                     // add dest folder
                     )
                 }
-                // Add al workspace to zip fie
-                zip zipFile: 'workspace.zip', archive: false, dir: 'marketbook'
+                script{
+                     sh '''
+                        zip -r marketbook.zip marketbook
+                    '''
+                }
+
             }
         }
 
