@@ -65,8 +65,7 @@ pipeline {
                     echo "directory: ${directory}"
                     echo "credentialsIdProp: ${credentialsIdProp}"
                     withCredentials([usernamePassword(credentialsId: "${credentialsIdProp}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
-                            sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
-                            echo "Commando a ejecutar"
+                            echo "Commando a ejecutar en el servidor: scp -r ./sources.tar.gz ${user_name}@${host}:${directory}/sources.tar.gz"
                             echo '''
                                 sh sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz
                             '''
