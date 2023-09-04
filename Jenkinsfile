@@ -31,6 +31,7 @@ pipeline {
                     env.CALYPSO_HOME_SOURCES_DIR = props.CALYPSO_HOME_SOURCES_DIR
                     env.CREDENTIAL_HOST_ID = props.CREDENTIAL_HOST_ID
                     env.CALYPSO_HOME_SOURCES_DIR = props.CALYPSO_HOME_SOURCES_DIR
+                    env.CALYPSO_REPOSITORY_URL = props.CALYPSO_REPOSITORY_URL
                 }
             }
         }
@@ -40,7 +41,7 @@ pipeline {
                 script {
                     checkout([$class: 'GitSCM',
                               branches: [[name: "${GIT_BRANCH_DESCARGA}"]],
-                              userRemoteConfigs: [[url: 'https://github.com/charfo/marketbook.git']]
+                              userRemoteConfigs: [[url: CALYPSO_REPOSITORY_URL]]
                               ])
                 }
                 script{
@@ -64,12 +65,12 @@ pipeline {
                     echo "directory: ${directory}"
                     echo "credentialsIdProp: ${credentialsIdProp}"
                     withCredentials([usernamePassword(credentialsId: "${credentialsIdProp}", passwordVariable: 'user_pass', usernameVariable: 'user_name')]) {
-                            //sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
+                            sh '''sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz'''
                             echo "Commando a ejecutar"
                             echo '''
-                                sshpass -p "${user_pass}" scp -r ./sources.tar.gz "${user_name}"@"${host}":"${directory}"/sources.tar.gz
+                                sh sshpass -p "$user_pass" scp -r ./sources.tar.gz "$user_name"@"$host":"$directory"/sources.tar.gz
                             '''
-                            echo "Files are on server and try to deploy the application"                   
+                            echo "Files are on server and try to deploy the application"
                             
                     }   
                 }                
