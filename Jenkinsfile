@@ -14,6 +14,9 @@ pipeline {
         choice(name: 'CALYPSO_ENVIRONMENT', choices: ['', 'development', 'certification','production'], description: 'Entorno Calypso')
         string(name: 'GIT_BRANCH_DESCARGA', defaultValue: '', description: 'Rama Gitlab (ej:feature_TSABloque1_DEV)')
     }
+    
+    //Lectura de fichero properties
+
 
     // hacemos checkout del repositorio
     stages {
@@ -28,17 +31,23 @@ pipeline {
                 }
             }
         }
-        stage('SSH copy sources remote host') {
+
+        
+        stage("Copy to calipso des files") {
+
+            when {
+                expression { params.CALYPSO_ENVIRONMENT == 'development' }
+            }            
             steps {
-                
-            }
-            steps {
-                script{
-                    sshPublisher(publishers: [sshPublisherDesc(configName: 'calypso-ssh', transfers: [sshTransfer(execCommand: 'ls -la', execTimeout: 120000, 
-                    flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/home/charfo', 
-                    remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'pom.xml', 
-                    sourceFilesSDF: false, usePty: false)])])
-                }
+                withCredentials([usernamePassword(credentialsId: 'US22111_DES', passwordVariable: 'pwdUS22111', usernameVariable: 'userUS22111')]) {
+                    sh '''
+                        sshpass -p "$pwdUS22111" scp -r ./denunciantes/target/denunciantes*.war "$userUS22111"@10.101.195.53:/home/US22111/sql_scripts/denunciantes.war
+                    '''
+                    echo "Files are on server and try to deploy the application"
+                    sh """
+                        sshpass -p "$pwdUS22111" ssh -o StrictHostKeyChecking=no "$userUS22111"@10.101.195.53 << EOF
+                        ./script_despliegue/deploy.sh "DES" "${VERSION}"
+					"""
             }
         }
     }
