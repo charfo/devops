@@ -41,8 +41,7 @@ pipeline {
                 script {
                     checkout([$class: 'GitSCM',
                               branches: [[name: 'feature1']],
-                              userRemoteConfigs: [[url: 'https://github.com/charfo/marketbook.git']],
-                              extensions: [$class: 'RelativeTargetDirectory', relativeTargetDir: 'marketbook']])
+                              userRemoteConfigs: [[url: 'https://github.com/charfo/marketbook.git']])
                 }
                 script{
                      sh '''
