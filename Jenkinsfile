@@ -21,7 +21,12 @@ pipeline {
     //Lectura de fichero .properties de las propiedades
     environment {
         //Read properties file
-        envProps = readProperties file: "resources/environment_${CALYPSO_ENVIRONMENT}.properties"
+        script {
+            new Properties().load(new StringReader(readFile("resources/environment_${CALYPSO_ENVIRONMENT}.properties")))
+            .each { key, value ->
+                env."$key" = "$value"
+            }
+        }
     }
 
 
@@ -46,9 +51,7 @@ pipeline {
                               ])
                 }
                 script{
-                     sh '''
-                        tar -zcvf sources.tar.gz --exclude='./.git'  **
-                    '''
+                     sh '''tar -zcvf sources.tar.gz --exclude='./.git'  **'''
                 }
 
             }
@@ -59,9 +62,9 @@ pipeline {
             steps {
                 script {
                     // Assign properties to variables
-                    host = envProps.getProperty('CALYPSO_HOST_IP')
-                    directory = envProps.getProperty('CALYPSO_HOME_SOURCES_DIR')
-                    credentialsIdProp = envProps.getProperty('CREDENTIAL_HOST_ID')
+                    def host = env.CALYPSO_HOST_IP
+                    def directory = env.CALYPSO_HOME_SOURCES_DIR
+                    def credentialsIdProp = env.CREDENTIAL_HOST_ID
                     echo "host: ${host}"
                     echo "directory: ${directory}"
                     echo "credentialsIdProp: ${credentialsIdProp}"
