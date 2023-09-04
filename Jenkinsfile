@@ -18,11 +18,6 @@ pipeline {
     }
  
 
-    //Lectura de fichero .properties de las propiedades
-    environment {
-
-    }
-
 
     // hacemos checkout del repositorio
     stages {
